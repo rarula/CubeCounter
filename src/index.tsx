@@ -1,8 +1,18 @@
-import { JSX } from 'react';
 import { createRoot } from 'react-dom/client';
 
+import Game from './components/Game';
+import Menu from './components/Menu';
+import GameStateProvider, { useGameState } from './contexts/GameState';
+
+import './global.css';
+
 const Main = (): JSX.Element => {
-    return <h1>かぞえてブロック</h1>;
+    const state = useGameState();
+    return <main className='main'>{state.isPlaying ? <Game /> : <Menu />}</main>;
 };
 
-createRoot(document.getElementById('root')!).render(<Main />);
+createRoot(document.getElementById('root')!).render(
+    <GameStateProvider>
+        <Main />
+    </GameStateProvider>,
+);
