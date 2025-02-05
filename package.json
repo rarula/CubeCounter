@@ -12,8 +12,6 @@
         "build-prod": "webpack --mode production"
     },
     "dependencies": {
-        "@react-three/drei": "^9.121.2",
-        "@react-three/fiber": "^8.17.12",
         "react": "18.3.1",
         "react-dom": "18.3.1",
         "three": "^0.172.0"
