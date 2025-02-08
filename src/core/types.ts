@@ -1,5 +1,5 @@
 export type Question = {
-    scene: number[][];
+    image: string;
     answer: number;
     choices: number[];
 };

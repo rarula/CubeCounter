@@ -1,13 +1,12 @@
 import { AmbientLight, Color, DirectionalLight, Mesh, MeshStandardMaterial, OrthographicCamera, Scene, Vector3, WebGLRenderer } from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
-import { Question } from './types';
 import { degToRad } from './utils';
 
 const WIDTH = 700;
 const HEIGHT = 700;
 
-export function createCanvas(question: Question, zoom: number): HTMLCanvasElement {
+export function createCanvas(heightsList: number[][], zoom: number): HTMLCanvasElement {
     const renderer = new WebGLRenderer({ antialias: true });
     renderer.setSize(WIDTH, HEIGHT);
 
@@ -27,9 +26,9 @@ export function createCanvas(question: Question, zoom: number): HTMLCanvasElemen
     dirLight.position.set(-0.6, 1, 0.25);
 
     const cubes: Mesh[] = [];
-    for (let x = 0; x < question.scene.length; x++) {
-        for (let z = 0; z < question.scene[x].length; z++) {
-            for (let y = 0; y < question.scene[x][z]; y++) {
+    for (let x = 0; x < heightsList.length; x++) {
+        for (let z = 0; z < heightsList[x].length; z++) {
+            for (let y = 0; y < heightsList[x][z]; y++) {
                 const cube = createCube(x * -100, y * 100, z * 100, y % 2 == 0);
                 cubes.push(cube);
             }

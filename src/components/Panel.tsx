@@ -7,15 +7,20 @@ type Props = {
 
 const Panel = (props: Props): JSX.Element => {
     const progress = useGameProgress();
-    const increment = (): void => {
-        progress.setQuestion((prev) => prev + 1);
+
+    const nextQuestion = (): void => {
+        if (progress.questionIndex + 1 < progress.questions.length) {
+            progress.setQuestionIndex((prev) => prev + 1);
+        } else {
+            progress.setSession('FINISHED');
+        }
     };
 
     return (
         <ul className='panel'>
             {props.question.choices.map((choice) =>
                 choice === props.question.answer ? (
-                    <li key={choice} className='choice correct-answer' onClick={increment}>
+                    <li key={choice} className='choice correct-answer' onClick={nextQuestion}>
                         {choice}
                     </li>
                 ) : (
