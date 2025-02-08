@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 
+import Fade from './Fade';
 import Panel from './Panel';
 import Screen from './Screen';
+import Spin from './Spin';
 import GameProgressProvider, { useGameProgress } from '../contexts/GameProgress';
 import { useGameState } from '../contexts/GameState';
 import { Puzzle } from '../core/puzzle';
@@ -11,35 +13,33 @@ import { Random } from '../core/utils';
 const WrappedGame = (): JSX.Element => {
     const state = useGameState();
     const progress = useGameProgress();
+    const question = progress.questions[progress.questionIndex];
 
-    switch (progress.session) {
-        case 'READY': {
-            return (
-                <div className='button' onClick={() => progress.setSession('PLAYING')}>
-                    START
+    return (
+        <>
+            {(progress.session === 'READY' || progress.session === 'PLAYING') && (
+                <div>
+                    <div className='button' onClick={() => progress.setSession('PLAYING')}>
+                        START
+                    </div>
                 </div>
-            );
-        }
-        case 'PLAYING': {
-            const question = progress.questions[progress.questionIndex];
-            return (
-                <div className='game'>
+            )}
+            <Fade duration='0.2s' in={progress.session === 'PLAYING'}>
+                <div className='session-playing'>
                     <Screen question={question} />
                     <Panel question={question} />
                 </div>
-            );
-        }
-        case 'FINISHED': {
-            return (
+            </Fade>
+            {progress.session === 'FINISHED' && (
                 <div>
                     <h1>Finished!</h1>
                     <div className='button' onClick={() => state.setPlaying(false)}>
                         OK
                     </div>
                 </div>
-            );
-        }
-    }
+            )}
+        </>
+    );
 };
 
 const Game = (): JSX.Element => {
@@ -64,12 +64,16 @@ const Game = (): JSX.Element => {
         }, 100);
     }, []);
 
-    return questions === undefined ? (
-        <h1>Loading...</h1>
-    ) : (
-        <GameProgressProvider questions={questions}>
-            <WrappedGame />
-        </GameProgressProvider>
+    return (
+        <div className='game'>
+            {questions === undefined ? (
+                <Spin />
+            ) : (
+                <GameProgressProvider questions={questions}>
+                    <WrappedGame />
+                </GameProgressProvider>
+            )}
+        </div>
     );
 };
 
