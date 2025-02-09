@@ -29,6 +29,10 @@ export function toTimeString(value: number): string {
     return value.toString().padStart(2, '0');
 }
 
+export function msToTimeString(value: number): string {
+    return value.toString().padEnd(3, '0');
+}
+
 export class Random {
     private w: number;
     private x = 154866524;

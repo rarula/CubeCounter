@@ -8,7 +8,7 @@ import GameProgressProvider, { useGameProgress } from '../contexts/GameProgress'
 import { useGameState } from '../contexts/GameState';
 import { Puzzle } from '../core/puzzle';
 import { Question } from '../core/types';
-import { getTimeByMilliseconds, Random, toTimeString } from '../core/utils';
+import { getTimeByMilliseconds, msToTimeString, Random, toTimeString } from '../core/utils';
 
 const ResultMenu = (): JSX.Element => {
     const state = useGameState();
@@ -20,7 +20,7 @@ const ResultMenu = (): JSX.Element => {
     return (
         <div className='menu'>
             <h1>Finished!</h1>
-            <h3>{0 < hours ? 'タイム: 59:59.999+' : `タイム: ${toTimeString(minutes)}:${toTimeString(seconds)}.${milliseconds}`}</h3>
+            <h3>{0 < hours ? 'タイム: 59:59.999+' : `タイム: ${toTimeString(minutes)}:${toTimeString(seconds)}.${msToTimeString(milliseconds)}`}</h3>
             <div className='button' onClick={() => state.setPlaying(false)}>
                 OK
             </div>
