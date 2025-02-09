@@ -11,6 +11,8 @@ type Session = 'READY' | 'PLAYING' | 'FINISHED';
 
 type ContextGameProgress = {
     questions: Question[];
+    startedTime: number;
+    setStartedTime: (value: number | ((prevState: number) => number)) => void;
     questionIndex: number;
     setQuestionIndex: (value: number | ((prevState: number) => number)) => void;
     session: Session;
@@ -30,11 +32,14 @@ export const useGameProgress = (): ContextGameProgress => {
 };
 
 const GameProgressProvider = (props: Props): JSX.Element => {
+    const [startedTime, setStartedTime] = useState(0);
     const [questionIndex, setQuestionIndex] = useState(0);
     const [session, setSession] = useState<Session>('READY');
 
     const value: ContextGameProgress = {
         questions: props.questions,
+        startedTime,
+        setStartedTime,
         questionIndex,
         setQuestionIndex,
         session,

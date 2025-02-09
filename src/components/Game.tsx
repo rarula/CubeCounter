@@ -8,18 +8,40 @@ import GameProgressProvider, { useGameProgress } from '../contexts/GameProgress'
 import { useGameState } from '../contexts/GameState';
 import { Puzzle } from '../core/puzzle';
 import { Question } from '../core/types';
-import { Random } from '../core/utils';
+import { getTimeByMilliseconds, Random, toTimeString } from '../core/utils';
 
-const WrappedGame = (): JSX.Element => {
+const ResultMenu = (): JSX.Element => {
     const state = useGameState();
     const progress = useGameProgress();
+
+    const elapsed = new Date().getTime() - progress.startedTime;
+    const { milliseconds, seconds, minutes, hours } = getTimeByMilliseconds(elapsed);
+
+    return (
+        <div className='menu'>
+            <h1>Finished!</h1>
+            <h3>{0 < hours ? 'タイム: 59:59.999+' : `タイム: ${toTimeString(minutes)}:${toTimeString(seconds)}.${milliseconds}`}</h3>
+            <div className='button' onClick={() => state.setPlaying(false)}>
+                OK
+            </div>
+        </div>
+    );
+};
+
+const WrappedGame = (): JSX.Element => {
+    const progress = useGameProgress();
     const question = progress.questions[progress.questionIndex];
+
+    const clickStartButton = (): void => {
+        progress.setSession('PLAYING');
+        progress.setStartedTime(new Date().getTime());
+    };
 
     return (
         <>
             {(progress.session === 'READY' || progress.session === 'PLAYING') && (
                 <div>
-                    <div className='button' onClick={() => progress.setSession('PLAYING')}>
+                    <div className='button' onClick={clickStartButton}>
                         START
                     </div>
                 </div>
@@ -30,14 +52,7 @@ const WrappedGame = (): JSX.Element => {
                     <Panel question={question} />
                 </div>
             </Fade>
-            {progress.session === 'FINISHED' && (
-                <div>
-                    <h1>Finished!</h1>
-                    <div className='button' onClick={() => state.setPlaying(false)}>
-                        OK
-                    </div>
-                </div>
-            )}
+            {progress.session === 'FINISHED' && <ResultMenu />}
         </>
     );
 };
