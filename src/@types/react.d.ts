@@ -2,6 +2,6 @@ import 'react';
 
 declare module 'react' {
     interface CSSProperties {
-        '--fade-duration': string;
+        '--fade-duration'?: string;
     }
 }
