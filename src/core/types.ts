@@ -22,3 +22,11 @@ export type Time = {
     minutes: number;
     hours: number;
 };
+
+export type Calendar = {
+    year: number;
+    month: number;
+    date: number;
+    day: number;
+    isThisMonth: boolean;
+}[];

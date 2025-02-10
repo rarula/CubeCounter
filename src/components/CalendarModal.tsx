@@ -3,17 +3,12 @@ import { useEffect, useState } from 'react';
 import { LeftArrowSvg, RightArrowSvg } from './Svg';
 import { useGameState } from '../contexts/GameState';
 import { getDaysInMonth, mod } from '../core/utils';
+import { Calendar } from '../core/types';
 
 type Props = {
     closeCalendar: () => void;
     isOpened: boolean;
 };
-
-type Calendar = {
-    isThisMonth: boolean;
-    value: number;
-    day: number;
-}[];
 
 const NAMED_MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -37,34 +32,47 @@ const CalendarModal = (props: Props): JSX.Element => {
     const getCalendar = (y: number, m: number): Calendar => {
         const calendar: Calendar = [];
 
-        const days = getDaysInMonth(y, m);
-        const prevDays = getDaysInMonth(y, m - 1);
+        const prevDate = new Date(y, m, 0);
+        const currDate = new Date(y, m, 1);
+        const nextDate = new Date(y, m + 1, 1);
 
-        const firstDay = new Date(y, m, 1).getDay();
-        const lastDay = new Date(y, m, days).getDay();
+        const currentDays = getDaysInMonth(y, m);
+        const firstDay = currDate.getDay();
+        const lastDay = (firstDay - 1 + currentDays) % 7;
 
+        // 先月分のカレンダー
         if (0 < firstDay) {
             for (let i = 0; i < firstDay; i++) {
                 calendar.push({
-                    isThisMonth: false,
-                    value: prevDays - firstDay + 1 + i,
+                    year: prevDate.getFullYear(),
+                    month: prevDate.getMonth(),
+                    date: prevDate.getDate() - firstDay + i + 1,
                     day: i,
+                    isThisMonth: false,
                 });
             }
         }
-        for (let i = 0; i < days; i++) {
+
+        // 今月分のカレンダー
+        for (let i = 0; i < currentDays; i++) {
             calendar.push({
+                year: currDate.getFullYear(),
+                month: currDate.getMonth(),
+                date: i + 1,
+                day: (firstDay + i) % 7,
                 isThisMonth: true,
-                value: i + 1,
-                day: (i + firstDay) % 7,
             });
         }
+
+        // 来月分のカレンダー
         if (lastDay < 6) {
             for (let i = 0; i < 6 - lastDay; i++) {
                 calendar.push({
+                    year: nextDate.getFullYear(),
+                    month: nextDate.getMonth(),
+                    date: i + 1,
+                    day: lastDay + i + 1,
                     isThisMonth: false,
-                    value: i + 1,
-                    day: i + 1 + lastDay,
                 });
             }
         }
@@ -73,29 +81,45 @@ const CalendarModal = (props: Props): JSX.Element => {
     };
 
     const state = useGameState();
-    const currentDate = new Date(state.date);
 
-    const [year, setYear] = useState(currentDate.getFullYear());
-    const [month, setMonth] = useState(currentDate.getMonth());
-    const [date, setDate] = useState(currentDate.getDate());
+    const currentDate = new Date();
+    const stateDate = new Date(state.date);
 
-    const calendar = getCalendar(year, month);
-    const selectedDate = new Date(year, month, date);
+    const year = stateDate.getFullYear();
+    const month = stateDate.getMonth();
+    const date = stateDate.getDate();
+
+    const [selectedYear, setSelectedYear] = useState(year);
+    const [selectedMonth, setSelectedMonth] = useState(month);
+    const [selectedDate, setSelectedDate] = useState(date);
+
+    const [displayYear, setDisplayYear] = useState(year);
+    const [displayMonth, setDisplayMonth] = useState(month);
+
+    const calendar = getCalendar(displayYear, displayMonth);
+
+    const selectDate = (date: number): void => {
+        setSelectedYear(displayYear);
+        setSelectedMonth(displayMonth);
+        setSelectedDate(date);
+    };
 
     const closeCalendar = (): void => {
         props.closeCalendar();
     };
 
     const applyCalendar = (): void => {
-        state.changeDate(new Date(year, month, date).getTime());
+        state.changeDate(new Date(selectedYear, selectedMonth, selectedDate).getTime());
         props.closeCalendar();
     };
 
     useEffect(() => {
         if (props.isOpened) {
-            setYear(currentDate.getFullYear());
-            setMonth(currentDate.getMonth());
-            setDate(currentDate.getDate());
+            setSelectedYear(year);
+            setSelectedMonth(month);
+            setSelectedDate(date);
+            setDisplayYear(year);
+            setDisplayMonth(month);
         }
     }, [props.isOpened]);
 
@@ -106,14 +130,14 @@ const CalendarModal = (props: Props): JSX.Element => {
                 <div className='calendar'>
                     <div className='calendar-header'>
                         <div className='calendar-date-selector'>
-                            <WrappedArrow direction='L' onClick={() => setMonth((prev) => mod(prev - 1, 12))} />
-                            <span>{NAMED_MONTH[month]}</span>
-                            <WrappedArrow direction='R' onClick={() => setMonth((prev) => mod(prev + 1, 12))} />
+                            <WrappedArrow direction='L' onClick={() => setDisplayMonth((prev) => mod(prev - 1, 12))} />
+                            <span>{NAMED_MONTH[displayMonth]}</span>
+                            <WrappedArrow direction='R' onClick={() => setDisplayMonth((prev) => mod(prev + 1, 12))} />
                         </div>
                         <div className='calendar-date-selector'>
-                            <WrappedArrow direction='L' onClick={() => setYear((prev) => prev - 1)} />
-                            <span>{year}</span>
-                            <WrappedArrow direction='R' onClick={() => setYear((prev) => prev + 1)} />
+                            <WrappedArrow direction='L' onClick={() => setDisplayYear((prev) => prev - 1)} />
+                            <span>{displayYear}</span>
+                            <WrappedArrow direction='R' onClick={() => setDisplayYear((prev) => prev + 1)} />
                         </div>
                     </div>
                     <div className='calendar-body'>
@@ -128,18 +152,21 @@ const CalendarModal = (props: Props): JSX.Element => {
                         </div>
                         <div className='calendar-dates'>
                             {calendar.map((date, index) =>
-                                date.isThisMonth ? (
+                                date.isThisMonth &&
+                                (date.year < currentDate.getFullYear() ||
+                                    (date.year === currentDate.getFullYear() && date.month < currentDate.getMonth()) ||
+                                    (date.year === currentDate.getFullYear() && date.month === currentDate.getMonth() && date.date <= currentDate.getDate())) ? (
                                     <div
+                                        onClick={() => selectDate(date.date)}
                                         key={index}
                                         className={
                                             'calendar-date calendar-date-enabled' +
                                             (date.day === 0 ? ' calendar-date-sunday' : '') +
                                             (date.day === 6 ? ' calendar-date-saturday' : '')
                                         }
-                                        onClick={() => setDate(date.value)}
                                     >
-                                        <div className={date.value === selectedDate.getDate() ? 'calendar-date-selected' : ''}>
-                                            <span>{date.value}</span>
+                                        <div className={date.year === selectedYear && date.month === selectedMonth && date.date === selectedDate ? 'calendar-date-selected' : ''}>
+                                            <span>{date.date}</span>
                                         </div>
                                     </div>
                                 ) : (
@@ -152,7 +179,7 @@ const CalendarModal = (props: Props): JSX.Element => {
                                         }
                                     >
                                         <div>
-                                            <span>{date.value}</span>
+                                            <span>{date.date}</span>
                                         </div>
                                     </div>
                                 ),
