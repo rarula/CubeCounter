@@ -16,6 +16,10 @@ const Panel = (props: Props): JSX.Element => {
         }
     };
 
+    const clickWrongAnswer = (): void => {
+        progress.setWrongAnswers((prev) => prev + 1);
+    };
+
     return (
         <ul className='panel'>
             {props.question.choices.map((choice) =>
@@ -24,7 +28,7 @@ const Panel = (props: Props): JSX.Element => {
                         {choice}
                     </li>
                 ) : (
-                    <li key={choice} className='choice wrong-answer'>
+                    <li key={choice} className='choice wrong-answer' onClick={clickWrongAnswer}>
                         {choice}
                     </li>
                 ),

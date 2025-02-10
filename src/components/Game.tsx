@@ -19,8 +19,25 @@ const ResultMenu = (): JSX.Element => {
 
     return (
         <div className='menu'>
-            <h1>Finished!</h1>
-            <h3>{0 < hours ? 'タイム: 59:59.999+' : `タイム: ${toTimeString(minutes)}:${toTimeString(seconds)}.${msToTimeString(milliseconds)}`}</h3>
+            <h1>終了！</h1>
+            <div className='submenu'>
+                <h3>
+                    <span className='font-normal color-gray'>間違えた回数: </span>
+                    <span className='font-bold'>{progress.wrongAnswers}</span>
+                </h3>
+                <h3>
+                    <span className='font-normal color-gray'>記録: </span>
+                    {0 < hours ? (
+                        <span className='font-bold'>
+                            {toTimeString(59)}:{toTimeString(59)}.{msToTimeString(999)}+
+                        </span>
+                    ) : (
+                        <span className='font-bold'>
+                            {toTimeString(minutes)}:{toTimeString(seconds)}.{msToTimeString(milliseconds)}
+                        </span>
+                    )}
+                </h3>
+            </div>
             <div className='button' onClick={() => state.setPlaying(false)}>
                 OK
             </div>
@@ -29,7 +46,10 @@ const ResultMenu = (): JSX.Element => {
 };
 
 const WrappedGame = (): JSX.Element => {
+    const state = useGameState();
     const progress = useGameProgress();
+
+    const date = new Date(state.date);
     const question = progress.questions[progress.questionIndex];
 
     const clickStartButton = (): void => {
@@ -37,12 +57,24 @@ const WrappedGame = (): JSX.Element => {
         progress.setStartedTime(new Date().getTime());
     };
 
+    const clickBackButton = (): void => {
+        state.setPlaying(false);
+    };
+
     return (
         <>
             {(progress.session === 'READY' || progress.session === 'PLAYING') && (
-                <div>
-                    <div className='button' onClick={clickStartButton}>
-                        START
+                <div className='menu'>
+                    <h3>
+                        {date.getFullYear()}/ {toTimeString(date.getMonth() + 1)} / {toTimeString(date.getDate())}
+                    </h3>
+                    <div className='menu-panel'>
+                        <div className='button' onClick={clickStartButton}>
+                            START
+                        </div>
+                        <div className='button' onClick={clickBackButton}>
+                            Back
+                        </div>
                     </div>
                 </div>
             )}

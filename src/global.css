@@ -17,6 +17,18 @@ body {
     background-color: rgb(255, 255, 255);
 }
 
+span.color-gray {
+    color: rgb(59, 59, 59);
+}
+
+span.font-normal {
+    font-weight: 300;
+}
+
+span.font-bold {
+    font-weight: 600;
+}
+
 .spin {
     width: 200px;
     height: 200px;
@@ -266,6 +278,13 @@ body {
     align-items: center;
     flex-direction: column;
     gap: 40px;
+}
+
+.submenu {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
 }
 
 .menu-panel {
