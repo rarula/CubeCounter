@@ -2,48 +2,14 @@ import { useEffect, useState } from 'react';
 
 import Fade from './Fade';
 import Panel from './Panel';
+import Result from './Result';
 import Screen from './Screen';
 import Spin from './Spin';
 import GameProgressProvider, { useGameProgress } from '../contexts/GameProgress';
 import { useGameState } from '../contexts/GameState';
 import { Puzzle } from '../core/puzzle';
 import { Question } from '../core/types';
-import { getTimeByMilliseconds, msToTimeString, Random, toTimeString } from '../core/utils';
-
-const ResultMenu = (): JSX.Element => {
-    const state = useGameState();
-    const progress = useGameProgress();
-
-    const elapsed = new Date().getTime() - progress.startedTime;
-    const { milliseconds, seconds, minutes, hours } = getTimeByMilliseconds(elapsed);
-
-    return (
-        <div className='menu'>
-            <h1>終了！</h1>
-            <div className='submenu'>
-                <h3>
-                    <span className='font-normal color-gray'>間違えた回数: </span>
-                    <span className='font-bold'>{progress.wrongAnswers}</span>
-                </h3>
-                <h3>
-                    <span className='font-normal color-gray'>記録: </span>
-                    {0 < hours ? (
-                        <span className='font-bold'>
-                            {toTimeString(59)}:{toTimeString(59)}.{msToTimeString(999)}+
-                        </span>
-                    ) : (
-                        <span className='font-bold'>
-                            {toTimeString(minutes)}:{toTimeString(seconds)}.{msToTimeString(milliseconds)}
-                        </span>
-                    )}
-                </h3>
-            </div>
-            <div className='button' onClick={() => state.setPlaying(false)}>
-                OK
-            </div>
-        </div>
-    );
-};
+import { Random, toTimeString } from '../core/utils';
 
 const WrappedGame = (): JSX.Element => {
     const state = useGameState();
@@ -84,7 +50,7 @@ const WrappedGame = (): JSX.Element => {
                     <Panel question={question} />
                 </div>
             </Fade>
-            {progress.session === 'FINISHED' && <ResultMenu />}
+            {progress.session === 'FINISHED' && <Result />}
         </>
     );
 };
