@@ -4,6 +4,16 @@ export type Question = {
     choices: number[];
 };
 
+export type Stats = {
+    finishedTime: number;
+    wrongAnswer: number;
+};
+
+export type FormattedStats = {
+    time: string;
+    wrongAnswer: number;
+};
+
 export type Coordinates = {
     x: number;
     y: number;

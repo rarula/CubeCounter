@@ -11,8 +11,15 @@ const Panel = (props: Props): JSX.Element => {
     const progress = useGameProgress();
 
     const [isCooling, setCooling] = useState(false);
+    const [wrongAnswer, setWrongAnswer] = useState(0);
 
     const nextQuestion = (): void => {
+        progress.statsList.push({
+            finishedTime: new Date().getTime(),
+            wrongAnswer: wrongAnswer,
+        });
+        setWrongAnswer(0);
+
         if (progress.questionIndex + 1 < progress.questions.length) {
             progress.setQuestionIndex((prev) => prev + 1);
         } else {
@@ -22,7 +29,7 @@ const Panel = (props: Props): JSX.Element => {
 
     const clickWrongAnswer = (): void => {
         setCooling(true);
-        progress.setWrongAnswers((prev) => prev + 1);
+        setWrongAnswer((prev) => prev + 1);
 
         setTimeout(() => {
             setCooling(false);

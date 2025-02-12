@@ -1,13 +1,40 @@
 import { useGameProgress } from '../contexts/GameProgress';
 import { useGameState } from '../contexts/GameState';
+import { FormattedStats, Stats } from '../core/types';
 import { getTimeByMilliseconds, msToTimeString, toTimeString } from '../core/utils';
 
 const Result = (): JSX.Element => {
     const state = useGameState();
     const progress = useGameProgress();
 
-    const elapsed = new Date().getTime() - progress.startedTime;
-    const { milliseconds, seconds, minutes, hours } = getTimeByMilliseconds(elapsed);
+    const formatStatsList = (statsList: Stats[], initialStats: Stats): FormattedStats[] => {
+        const result: FormattedStats[] = [];
+        const list = [initialStats, ...statsList];
+
+        for (let i = 1; i < list.length; i++) {
+            const elapsed = list[i].finishedTime - list[i - 1].finishedTime;
+            const time = getTimeByMilliseconds(elapsed);
+
+            result.push({
+                time: `${toTimeString(time.minutes)}:${toTimeString(time.seconds)}.${msToTimeString(time.milliseconds)}`,
+                wrongAnswer: list[i].wrongAnswer,
+            });
+        }
+
+        return result;
+    };
+
+    const elapsed = progress.statsList[progress.statsList.length - 1].finishedTime - progress.startedTime;
+    const time = getTimeByMilliseconds(elapsed);
+
+    const wrongAnswerCount = progress.statsList.reduce((prev, current) => {
+        return prev + current.wrongAnswer;
+    }, 0);
+
+    const statsList = formatStatsList(progress.statsList, {
+        finishedTime: progress.startedTime,
+        wrongAnswer: 0,
+    });
 
     return (
         <div className='result'>
@@ -16,14 +43,14 @@ const Result = (): JSX.Element => {
                 <div className='menu-sub'>
                     <h3>
                         <span className='font-normal color-gray'>間違えた回数: </span>
-                        <span className='font-bold'>{progress.wrongAnswers}</span>
+                        <span className='font-bold'>{wrongAnswerCount}</span>
                     </h3>
                     <h3>
                         <span className='font-normal color-gray'>記録: </span>
-                        {0 < hours ? (
+                        {0 < time.hours ? (
                             <span className='font-bold'>{`${toTimeString(59)}:${toTimeString(59)}.${msToTimeString(999)}+`}</span>
                         ) : (
-                            <span className='font-bold'>{`${toTimeString(minutes)}:${toTimeString(seconds)}.${msToTimeString(milliseconds)}`}</span>
+                            <span className='font-bold'>{`${toTimeString(time.minutes)}:${toTimeString(time.seconds)}.${msToTimeString(time.milliseconds)}`}</span>
                         )}
                     </h3>
                 </div>
@@ -43,10 +70,10 @@ const Result = (): JSX.Element => {
                                 </div>
                                 <div className='stats'>
                                     <p>
-                                        <span>2ミス</span>
+                                        <span>{`${statsList[index].wrongAnswer}ミス`}</span>
                                     </p>
                                     <p>
-                                        <span>00:15.000</span>
+                                        <span>{statsList[index].time}</span>
                                     </p>
                                 </div>
                             </div>
