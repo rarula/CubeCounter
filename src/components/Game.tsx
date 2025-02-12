@@ -11,6 +11,8 @@ import { Puzzle } from '../core/puzzle';
 import { Question } from '../core/types';
 import { Random, toTimeString } from '../core/utils';
 
+const QUESTION_COUNT = 5;
+
 const WrappedGame = (): JSX.Element => {
     const state = useGameState();
     const progress = useGameProgress();
@@ -65,9 +67,8 @@ const Game = (): JSX.Element => {
         // 'setTimeout(callback, delay)' を用いることで、メインスレッドの処理を完了してから実行している
         // 遅延を0msにして実行するとSafariで表示が崩れるのを確認したため、100msにして実行している
         setTimeout(() => {
-            // TODO: マジックナンバーで問題数を決めるのをやめて変数化する
             const questions: Question[] = [];
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < QUESTION_COUNT; i++) {
                 questions.push(puzzle.next());
             }
 
