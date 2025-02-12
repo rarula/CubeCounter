@@ -1,7 +1,7 @@
 import { AmbientLight, Color, DirectionalLight, Mesh, MeshStandardMaterial, OrthographicCamera, Scene, Vector3, WebGLRenderer } from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
-import { degToRad } from './utils';
+import { toRadians } from './utils';
 
 const WIDTH = 700;
 const HEIGHT = 700;
@@ -16,8 +16,8 @@ export function createCanvas(heightsList: number[][], zoom: number): HTMLCanvasE
     const camera = new OrthographicCamera(WIDTH / -2, WIDTH / 2, HEIGHT / 2, HEIGHT / -2, 0.1, 1000);
     camera.position.set(-500, 375, 500);
     camera.rotation.set(0, 0, 0);
-    camera.rotateOnAxis(new Vector3(1, 0, 1), degToRad(-15));
-    camera.rotateOnAxis(new Vector3(0, 1, 0), degToRad(-45));
+    camera.rotateOnAxis(new Vector3(1, 0, 1), toRadians(-15));
+    camera.rotateOnAxis(new Vector3(0, 1, 0), toRadians(-45));
     camera.zoom = zoom;
     camera.updateProjectionMatrix();
 

@@ -4,7 +4,7 @@ export function mod(n: number, d: number) {
     return ((n % d) + d) % d;
 }
 
-export function degToRad(degrees: number) {
+export function toRadians(degrees: number) {
     return (degrees * Math.PI) / 180;
 }
 
