@@ -12,21 +12,12 @@ type Props = {
 
 const NAMED_MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-// TODO: returnを1つにまとめてJSX内でprops.directionを確認するように変更する
 const WrappedArrow = (props: { direction: 'L' | 'R'; onClick: () => void }): JSX.Element => {
-    if (props.direction === 'L') {
-        return (
-            <div className='svg-arrow' onClick={props.onClick}>
-                <LeftArrowSvg />
-            </div>
-        );
-    } else {
-        return (
-            <div className='svg-arrow' onClick={props.onClick}>
-                <RightArrowSvg />
-            </div>
-        );
-    }
+    return (
+        <div className='svg-arrow' onClick={props.onClick}>
+            {props.direction === 'L' ? <LeftArrowSvg /> : <RightArrowSvg />}
+        </div>
+    );
 };
 
 const CalendarModal = (props: Props): JSX.Element => {
