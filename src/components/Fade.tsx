@@ -8,7 +8,7 @@ type Props = {
 
 const Fade = (props: Props): JSX.Element => {
     return (
-        <div className={'fade' + (props.in ? ' fade-showing' : '')} style={{ '--fade-duration': props.duration }}>
+        <div className={'fade' + (props.in ? ' showing' : '')} style={{ '--fade-duration': props.duration }}>
             {props.children}
         </div>
     );

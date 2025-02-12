@@ -1,0 +1,23 @@
+.relative {
+    position: relative;
+}
+
+.color-gray {
+    color: rgb(59, 59, 59);
+}
+
+.font-normal {
+    font-weight: 300;
+}
+
+.font-bold {
+    font-weight: 600;
+}
+
+.font-larger {
+    font-size: larger;
+}
+
+.font-x-large {
+    font-size: 22px;
+}

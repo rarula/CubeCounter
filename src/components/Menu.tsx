@@ -26,23 +26,19 @@ const Menu = (): JSX.Element => {
 
     return (
         <>
-            <div className='menu-container'>
-                <div className='menu'>
-                    <h1>かぞえてブロック</h1>
-                    <h3>
-                        {date.getFullYear()}/ {toTimeString(date.getMonth() + 1)} / {toTimeString(date.getDate())}
-                    </h3>
-                    <div className='menu-panel'>
-                        <div className='menu-panel-horizontal'>
-                            <div className='button icon-button calendar-button' onClick={openCalendar}>
-                                <CalendarSvg />
-                            </div>
-                            <div className='button' onClick={handleClick}>
-                                PLAY
-                            </div>
+            <div className='menu'>
+                <h1>かぞえてブロック</h1>
+                <h3>{`${date.getFullYear()} / ${toTimeString(date.getMonth() + 1)} / ${toTimeString(date.getDate())}`}</h3>
+                <div className='menu-panel'>
+                    <div className='relative'>
+                        <div className='icon-button calendar-button' onClick={openCalendar}>
+                            <CalendarSvg />
                         </div>
-                        <div className='button'>HOW TO PLAY</div>
+                        <div className='button' onClick={handleClick}>
+                            PLAY
+                        </div>
                     </div>
+                    <div className='button'>HOW TO PLAY</div>
                 </div>
             </div>
             <Fade duration='0.2s' in={isOpened}>

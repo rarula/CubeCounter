@@ -12,6 +12,7 @@ type Props = {
 
 const NAMED_MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+// TODO: returnを1つにまとめてJSX内でprops.directionを確認するように変更する
 const WrappedArrow = (props: { direction: 'L' | 'R'; onClick: () => void }): JSX.Element => {
     if (props.direction === 'L') {
         return (
@@ -124,79 +125,68 @@ const CalendarModal = (props: Props): JSX.Element => {
     }, [props.isOpened]);
 
     return (
-        <div className='modal'>
+        <>
             <div className='modal-background' onClick={closeCalendar} />
-            <div className='calendar-modal'>
-                <div className='calendar'>
-                    <div className='calendar-header'>
-                        <div className='calendar-date-selector'>
-                            <WrappedArrow direction='L' onClick={() => setDisplayMonth((prev) => mod(prev - 1, 12))} />
-                            <span>{NAMED_MONTH[displayMonth]}</span>
-                            <WrappedArrow direction='R' onClick={() => setDisplayMonth((prev) => mod(prev + 1, 12))} />
-                        </div>
-                        <div className='calendar-date-selector'>
-                            <WrappedArrow direction='L' onClick={() => setDisplayYear((prev) => prev - 1)} />
-                            <span>{displayYear}</span>
-                            <WrappedArrow direction='R' onClick={() => setDisplayYear((prev) => prev + 1)} />
-                        </div>
+            <div className='modal calendar'>
+                <div className='cld-header'>
+                    <div className='cld-date-selector'>
+                        <WrappedArrow direction='L' onClick={() => setDisplayMonth((prev) => mod(prev - 1, 12))} />
+                        <span>{NAMED_MONTH[displayMonth]}</span>
+                        <WrappedArrow direction='R' onClick={() => setDisplayMonth((prev) => mod(prev + 1, 12))} />
                     </div>
-                    <div className='calendar-body'>
-                        <div className='calendar-days'>
-                            <span>S</span>
-                            <span>M</span>
-                            <span>T</span>
-                            <span>W</span>
-                            <span>T</span>
-                            <span>F</span>
-                            <span>S</span>
-                        </div>
-                        <div className='calendar-dates'>
-                            {calendar.map((date, index) =>
-                                date.isThisMonth &&
-                                (date.year < currentDate.getFullYear() ||
-                                    (date.year === currentDate.getFullYear() && date.month < currentDate.getMonth()) ||
-                                    (date.year === currentDate.getFullYear() && date.month === currentDate.getMonth() && date.date <= currentDate.getDate())) ? (
-                                    <div
-                                        onClick={() => selectDate(date.date)}
-                                        key={index}
-                                        className={
-                                            'calendar-date calendar-date-enabled' +
-                                            (date.day === 0 ? ' calendar-date-sunday' : '') +
-                                            (date.day === 6 ? ' calendar-date-saturday' : '')
-                                        }
-                                    >
-                                        <div className={date.year === selectedYear && date.month === selectedMonth && date.date === selectedDate ? 'calendar-date-selected' : ''}>
+                    <div className='cld-date-selector'>
+                        <WrappedArrow direction='L' onClick={() => setDisplayYear((prev) => prev - 1)} />
+                        <span>{displayYear}</span>
+                        <WrappedArrow direction='R' onClick={() => setDisplayYear((prev) => prev + 1)} />
+                    </div>
+                </div>
+                <div className='cld-body'>
+                    <div className='cld-days'>
+                        <span className='cld-day-0'>S</span>
+                        <span className='cld-day-1'>M</span>
+                        <span className='cld-day-2'>T</span>
+                        <span className='cld-day-3'>W</span>
+                        <span className='cld-day-4'>T</span>
+                        <span className='cld-day-5'>F</span>
+                        <span className='cld-day-6'>S</span>
+                    </div>
+                    <div className='cld-dates'>
+                        {calendar.map((date, index) =>
+                            date.isThisMonth &&
+                            (date.year < currentDate.getFullYear() ||
+                                (date.year === currentDate.getFullYear() && date.month < currentDate.getMonth()) ||
+                                (date.year === currentDate.getFullYear() && date.month === currentDate.getMonth() && date.date <= currentDate.getDate())) ? (
+                                <div key={index} className={`cld-date cld-day-${date.day}`} onClick={() => selectDate(date.date)}>
+                                    {date.year === selectedYear && date.month === selectedMonth && date.date === selectedDate ? (
+                                        <div className='selected'>
                                             <span>{date.date}</span>
                                         </div>
-                                    </div>
-                                ) : (
-                                    <div
-                                        key={index}
-                                        className={
-                                            'calendar-date calendar-date-disabled' +
-                                            (date.day === 0 ? ' calendar-date-sunday' : '') +
-                                            (date.day === 6 ? ' calendar-date-saturday' : '')
-                                        }
-                                    >
+                                    ) : (
                                         <div>
                                             <span>{date.date}</span>
                                         </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <div key={index} className={`cld-date cld-day-${date.day} disabled`}>
+                                    <div>
+                                        <span>{date.date}</span>
                                     </div>
-                                ),
-                            )}
-                        </div>
+                                </div>
+                            ),
+                        )}
                     </div>
-                    <div className='calendar-footer'>
-                        <div className='calendar-footer-button calendar-footer-button-secondary' onClick={closeCalendar}>
-                            <span>Back</span>
-                        </div>
-                        <div className='calendar-footer-button calendar-footer-button-primary' onClick={applyCalendar}>
-                            <span>Apply</span>
-                        </div>
+                </div>
+                <div className='cld-footer'>
+                    <div className='cld-footer-button secondary' onClick={closeCalendar}>
+                        <span>Back</span>
+                    </div>
+                    <div className='cld-footer-button primary' onClick={applyCalendar}>
+                        <span>Apply</span>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

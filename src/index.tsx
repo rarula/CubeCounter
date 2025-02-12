@@ -4,7 +4,7 @@ import Game from './components/Game';
 import Menu from './components/Menu';
 import GameStateProvider, { useGameState } from './contexts/GameState';
 
-import './global.css';
+import './styles/globals.css';
 
 const Main = (): JSX.Element => {
     const state = useGameState();

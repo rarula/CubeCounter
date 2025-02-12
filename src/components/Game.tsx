@@ -31,9 +31,7 @@ const WrappedGame = (): JSX.Element => {
         <>
             {(progress.session === 'READY' || progress.session === 'PLAYING') && (
                 <div className='menu'>
-                    <h3>
-                        {date.getFullYear()}/ {toTimeString(date.getMonth() + 1)} / {toTimeString(date.getDate())}
-                    </h3>
+                    <h3>{`${date.getFullYear()} / ${toTimeString(date.getMonth() + 1)} / ${toTimeString(date.getDate())}`}</h3>
                     <div className='menu-panel'>
                         <div className='button' onClick={clickStartButton}>
                             START
@@ -45,7 +43,7 @@ const WrappedGame = (): JSX.Element => {
                 </div>
             )}
             <Fade duration='0.2s' in={progress.session === 'PLAYING'}>
-                <div className='session-playing'>
+                <div className='game'>
                     <Screen question={question} />
                     <Panel question={question} />
                 </div>
@@ -77,16 +75,14 @@ const Game = (): JSX.Element => {
         }, 100);
     }, []);
 
-    return (
-        <div className='game'>
-            {questions === undefined ? (
-                <Spin />
-            ) : (
-                <GameProgressProvider questions={questions}>
-                    <WrappedGame />
-                </GameProgressProvider>
-            )}
+    return questions === undefined ? (
+        <div className='loading'>
+            <Spin />
         </div>
+    ) : (
+        <GameProgressProvider questions={questions}>
+            <WrappedGame />
+        </GameProgressProvider>
     );
 };
 
