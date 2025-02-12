@@ -4,6 +4,8 @@ import { Random } from './utils';
 
 const ZOOM = 0.8;
 
+const CHOICE_COUNT = 6;
+
 export class Puzzle {
     private random: Random;
     private min: Size;
@@ -91,10 +93,13 @@ export class Puzzle {
 
         const image = createCanvas(heightsList, ZOOM).toDataURL();
 
-        // TODO: マジックナンバーで選択肢の数を決めるのをやめて変数化する
         const answer = total - empty + count;
-        const offset = answer - (Math.abs(this.random.next()) % 6);
-        const choices = [0, 1, 2, 3, 4, 5].map((val) => val + offset);
+        const offset = answer - (Math.abs(this.random.next()) % CHOICE_COUNT);
+        const choices: number[] = [];
+
+        for (let i = 0; i < CHOICE_COUNT; i++) {
+            choices.push(i + offset);
+        }
 
         return { image, answer, choices };
     }
