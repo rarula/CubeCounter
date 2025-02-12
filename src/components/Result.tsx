@@ -59,7 +59,7 @@ const Result = (): JSX.Element => {
                 </div>
                 <div className='result-questions'>
                     {progress.questions.map((question, index) => (
-                        <div className='question' key={index}>
+                        <div className={'question' + (0 < statsList[index].wrongAnswer ? ' miss' : '')} key={index}>
                             <div className='question-number'>
                                 <span className='font-larger'>{index + 1}</span>
                             </div>

@@ -9,6 +9,8 @@
     --color-important: rgb(255, 197, 197);
     --color-important-raw: 255, 197, 197;
     --color-warning: rgb(255, 86, 86);
+    --color-good: rgb(82, 178, 75);
+    --color-miss: rgb(186, 174, 45);
     --color-date: rgb(128, 128, 128);
     --color-date-sunday: rgb(255, 128, 128);
     --color-date-saturday: rgb(128, 128, 255);
@@ -19,8 +21,7 @@
     --color-bg-cld-active: rgba(0, 0, 0, 0.2);
     --color-bg-choice: rgb(225, 225, 225);
     --color-sd: rgba(0, 0, 0, 0.35);
-    --color-border-0: rgb(213, 213, 213);
-    --color-border-1: rgb(153, 153, 153);
+    --color-bd-0: rgb(213, 213, 213);
     --color-txt-result: rgb(118, 118, 118);
 }
 
@@ -238,7 +239,7 @@ body {
     border-width: 2px;
     border-radius: 15px;
     border-style: solid;
-    border-color: var(--color-border-0);
+    border-color: var(--color-bd-0);
 }
 
 .panel-container {
@@ -341,15 +342,20 @@ body {
     gap: 10px;
     border-width: 1px;
     border-radius: 5px;
+    border-color: var(--color-good);
     border-style: solid;
-    border-color: var(--color-border-1);
+    color: var(--color-good);
+}
+
+.question.miss {
+    border-color: var(--color-miss);
+    color: var(--color-miss);
 }
 
 .question-number {
     position: absolute;
     top: 8px;
     left: 8px;
-    color: var(--color-txt-result);
 }
 
 .question-img {
