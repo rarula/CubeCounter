@@ -2,6 +2,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/index.tsx',
@@ -14,14 +15,9 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.json'],
     },
     devServer: {
-        static: [
-            {
-                directory: path.join(__dirname, 'public'),
-            },
-            {
-                directory: path.join(__dirname, 'dist'),
-            },
-        ],
+        static: {
+            directory: path.join(__dirname, 'dist'),
+        },
         open: true,
         port: 3000,
     },
@@ -44,6 +40,16 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: `style.css`,
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: 'public',
+                    globOptions: {
+                        ignore: ['**/index.html'],
+                    },
+                },
+            ],
         }),
     ],
 };
