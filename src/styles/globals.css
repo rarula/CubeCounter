@@ -447,7 +447,7 @@ body {
         font-size: 2rem;
     }
 
-    .choice:active:not(.cooling) {
+    .choice:not(.cooling):active {
         transform: scale(0.9);
     }
 
