@@ -25,12 +25,36 @@ export function getTimeByMilliseconds(ms: number): Time {
     return { milliseconds, seconds, minutes, hours };
 }
 
-export function toTimeString(value: number): string {
+export function toSecondsString(value: number): string {
     return value.toString().padStart(2, '0');
 }
 
-export function msToTimeString(value: number): string {
+export function toMillisecondsString(value: number): string {
     return value.toString().padEnd(3, '0');
+}
+
+export function toTimeString(ms: number): string {
+    const time = getTimeByMilliseconds(ms);
+
+    if (0 < time.hours) {
+        return '59:59.999+';
+    } else {
+        return `${toSecondsString(time.minutes)}:${toSecondsString(time.seconds)}.${toMillisecondsString(time.milliseconds)}`;
+    }
+}
+
+export function toDateString(ms: number, spacing = true): string {
+    const date = new Date(ms);
+    const y = date.getFullYear();
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
+
+    // prettier-ignore
+    return [
+        y,
+        m.toString().padStart(2, '0'),
+        d.toString().padStart(2, '0')
+    ].join(spacing ? ' / ' : '/');
 }
 
 export class Random {

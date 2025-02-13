@@ -380,6 +380,20 @@ body {
     gap: 8px;
 }
 
+.share {
+    display: flex;
+    gap: 15px;
+}
+
+.share-button {
+    width: 40px;
+    height: 40px;
+    transition:
+        opacity 0.25s,
+        transform 0.25s;
+    cursor: pointer;
+}
+
 @media screen and (min-width: 581px) {
     .cld-date:not(.disabled):hover {
         background-color: var(--color-bg-cld-hover);
@@ -412,6 +426,10 @@ body {
     .choice:not(.cooling):active {
         transform: scale(0.97);
     }
+
+    .share-button:hover {
+        opacity: 0.5;
+    }
 }
 
 @media screen and (max-width: 580px) {
@@ -431,5 +449,9 @@ body {
 
     .choice:active:not(.cooling) {
         transform: scale(0.9);
+    }
+
+    .share-button:active {
+        transform: scale(0.96);
     }
 }

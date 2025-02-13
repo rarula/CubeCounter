@@ -9,7 +9,7 @@ import GameProgressProvider, { useGameProgress } from '../contexts/GameProgress'
 import { useGameState } from '../contexts/GameState';
 import { Puzzle } from '../core/puzzle';
 import { Question } from '../core/types';
-import { Random, toTimeString } from '../core/utils';
+import { Random, toDateString } from '../core/utils';
 
 const QUESTION_COUNT = 5;
 
@@ -17,7 +17,7 @@ const WrappedGame = (): JSX.Element => {
     const state = useGameState();
     const progress = useGameProgress();
 
-    const date = new Date(state.date);
+    const dateStr = toDateString(state.date);
     const question = progress.questions[progress.questionIndex];
 
     const clickStartButton = (): void => {
@@ -33,7 +33,7 @@ const WrappedGame = (): JSX.Element => {
         <>
             {(progress.session === 'READY' || progress.session === 'PLAYING') && (
                 <div className='menu'>
-                    <h3>{`${date.getFullYear()} / ${toTimeString(date.getMonth() + 1)} / ${toTimeString(date.getDate())}`}</h3>
+                    <h3>{dateStr}</h3>
                     <div className='menu-panel'>
                         <div className='button' onClick={clickStartButton}>
                             START

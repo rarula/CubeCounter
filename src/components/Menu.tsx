@@ -4,13 +4,13 @@ import CalendarModal from './CalendarModal';
 import Fade from './Fade';
 import { CalendarSvg } from './Svg';
 import { useGameState } from '../contexts/GameState';
-import { toTimeString } from '../core/utils';
+import { toDateString } from '../core/utils';
 
 const Menu = (): JSX.Element => {
     const state = useGameState();
-    const date = new Date(state.date);
-
     const [isOpened, setOpened] = useState(false);
+
+    const dateStr = toDateString(state.date);
 
     const openCalendar = (): void => {
         setOpened(true);
@@ -28,7 +28,7 @@ const Menu = (): JSX.Element => {
         <>
             <div className='menu'>
                 <h1>かぞえてブロック</h1>
-                <h3>{`${date.getFullYear()} / ${toTimeString(date.getMonth() + 1)} / ${toTimeString(date.getDate())}`}</h3>
+                <h3>{dateStr}</h3>
                 <div className='menu-panel'>
                     <div className='relative'>
                         <div className='icon-button calendar-button' onClick={openCalendar}>
