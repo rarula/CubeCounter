@@ -14,9 +14,14 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.json'],
     },
     devServer: {
-        static: {
-            directory: path.join(__dirname, 'dist'),
-        },
+        static: [
+            {
+                directory: path.join(__dirname, 'public'),
+            },
+            {
+                directory: path.join(__dirname, 'dist'),
+            },
+        ],
         open: true,
         port: 3000,
     },
@@ -34,7 +39,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html',
+            template: './public/index.html',
             filename: 'index.html',
         }),
         new MiniCssExtractPlugin({
