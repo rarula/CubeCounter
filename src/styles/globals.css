@@ -309,11 +309,14 @@ li.htp-letter::marker {
     justify-content: center;
 }
 
-.panel-container {
-    position: relative;
+.interface {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.panel-container {
+    position: relative;
 }
 
 .panel {

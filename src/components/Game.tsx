@@ -48,7 +48,12 @@ const WrappedGame = (): JSX.Element => {
                     <div className='screen'>
                         <img className='screen-img' src={question.image} />
                     </div>
-                    <Panel question={question} />
+                    <div className='interface'>
+                        <Panel question={question} />
+                        <div className='information'>
+                            <span className='color-gray font-larger'>{`${progress.questionIndex + 1} / ${progress.questions.length}`}</span>
+                        </div>
+                    </div>
                 </div>
             </Fade>
             {progress.session === 'FINISHED' && <Result />}
