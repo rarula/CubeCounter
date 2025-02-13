@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useGameProgress } from '../contexts/GameProgress';
 import { Question } from '../core/types';
@@ -12,8 +12,13 @@ const Panel = (props: Props): JSX.Element => {
 
     const [isCooling, setCooling] = useState(false);
     const [wrongAnswer, setWrongAnswer] = useState(0);
+    const [wrongIndexes, setWrongIndexes] = useState(new Set<number>());
 
-    const nextQuestion = (): void => {
+    useEffect(() => {
+        setWrongIndexes(new Set<number>());
+    }, [props.question]);
+
+    const clickCorrectAnswer = (): void => {
         progress.statsList.push({
             finishedTime: new Date().getTime(),
             wrongAnswer: wrongAnswer,
@@ -27,9 +32,10 @@ const Panel = (props: Props): JSX.Element => {
         }
     };
 
-    const clickWrongAnswer = (): void => {
+    const clickWrongAnswer = (index: number): void => {
         setCooling(true);
         setWrongAnswer((prev) => prev + 1);
+        wrongIndexes.add(index);
 
         setTimeout(() => {
             setCooling(false);
@@ -44,24 +50,22 @@ const Panel = (props: Props): JSX.Element => {
                 </div>
             )}
             <ul className='panel'>
-                {props.question.choices.map((choice) =>
-                    isCooling ? (
-                        choice === props.question.answer ? (
-                            <li key={choice} className='choice correct-answer cooling'>
-                                {choice}
-                            </li>
-                        ) : (
-                            <li key={choice} className='choice wrong-answer cooling'>
-                                {choice}
-                            </li>
-                        )
+                {props.question.choices.map((choice, index) =>
+                    wrongIndexes.has(index) ? (
+                        <li key={index} className='choice wrong-answer cooling'>
+                            <span>{choice}</span>
+                        </li>
+                    ) : isCooling ? (
+                        <li key={index} className='choice cooling'>
+                            <span>{choice}</span>
+                        </li>
                     ) : choice === props.question.answer ? (
-                        <li key={choice} className='choice correct-answer' onClick={nextQuestion}>
-                            {choice}
+                        <li key={index} className='choice' onClick={clickCorrectAnswer}>
+                            <span>{choice}</span>
                         </li>
                     ) : (
-                        <li key={choice} className='choice wrong-answer' onClick={clickWrongAnswer}>
-                            {choice}
+                        <li key={index} className='choice' onClick={() => clickWrongAnswer(index)}>
+                            <span>{choice}</span>
                         </li>
                     ),
                 )}

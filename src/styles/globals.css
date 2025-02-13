@@ -326,6 +326,10 @@ li.htp-letter::marker {
     list-style: none;
 }
 
+.choice.wrong-answer {
+    color: var(--color-warning);
+}
+
 .choice {
     display: flex;
     justify-content: center;
@@ -338,6 +342,7 @@ li.htp-letter::marker {
     box-shadow: 0px 0px 5px 0px var(--color-sd);
     border-radius: 5px;
     transition: transform 0.25s;
+    color: var(--color-common-gray);
 }
 
 .choice:not(.cooling) {
@@ -383,16 +388,6 @@ li.htp-letter::marker {
 
 .cooling-icon:after {
     transform: rotate(-45deg);
-}
-
-.correct-answer {
-    color: red;
-    /* color: rgb(20, 48, 90); */
-}
-
-.wrong-answer {
-    color: blue;
-    /* color: rgb(20, 48, 90); */
 }
 
 .result {
