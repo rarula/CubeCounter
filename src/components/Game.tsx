@@ -38,7 +38,7 @@ const WrappedGame = (): JSX.Element => {
                             START
                         </div>
                         <div className='button' onClick={clickBackButton}>
-                            Back
+                            BACK
                         </div>
                     </div>
                 </div>
