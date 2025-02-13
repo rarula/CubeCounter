@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import Fade from './Fade';
 import Panel from './Panel';
 import Result from './Result';
-import Screen from './Screen';
 import Spin from './Spin';
 import GameProgressProvider, { useGameProgress } from '../contexts/GameProgress';
 import { useGameState } from '../contexts/GameState';
@@ -46,7 +45,9 @@ const WrappedGame = (): JSX.Element => {
             )}
             <Fade duration='0.2s' in={progress.session === 'PLAYING'}>
                 <div className='game'>
-                    <Screen question={question} />
+                    <div className='screen'>
+                        <img className='screen-img' src={question.image} />
+                    </div>
                     <Panel question={question} />
                 </div>
             </Fade>
