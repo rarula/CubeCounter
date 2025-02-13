@@ -66,6 +66,9 @@ const Panel = (props: Props): JSX.Element => {
                     ),
                 )}
             </ul>
+            <div className='information'>
+                <span className='color-gray font-larger'>{`${progress.questionIndex + 1} / ${progress.questions.length}`}</span>
+            </div>
         </div>
     );
 };

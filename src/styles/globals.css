@@ -303,9 +303,17 @@ li.htp-letter::marker {
     border-color: var(--color-bd-1);
 }
 
+.information {
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
 .panel-container {
     position: relative;
-    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .panel {
