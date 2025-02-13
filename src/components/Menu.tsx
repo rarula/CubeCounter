@@ -57,7 +57,7 @@ const Menu = (): JSX.Element => {
                     </div>
                     <h2 className='text-center color-gray'>How To Play</h2>
                     <div className='htp'>
-                        <img className='htp-img' src='/how-to-play.png' />
+                        <img className='htp-img' src='how-to-play.png' />
                         <ol className='htp-letter-list'>
                             <li className='htp-letter'>
                                 <span className='color-gray'>画面上に表示される立方体の総数を数えましょう。隠れていて見えない位置の立方体も考慮することに注意してください。</span>
