@@ -9,7 +9,9 @@
         "start": "webpack-dev-server --mode development",
         "start-prod": "webpack-dev-server --mode production",
         "build": "webpack --mode development",
-        "build-prod": "webpack --mode production"
+        "build-prod": "webpack --mode production",
+        "predeploy": "yarn run build-prod",
+        "deploy": "gh-pages -d dist"
     },
     "dependencies": {
         "react": "18.3.1",
