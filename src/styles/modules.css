@@ -2,8 +2,12 @@
     position: relative;
 }
 
+.text-center {
+    text-align: center;
+}
+
 .color-gray {
-    color: rgb(59, 59, 59);
+    color: var(--color-common-gray);
 }
 
 .font-normal {
