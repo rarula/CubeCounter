@@ -65,7 +65,7 @@ const Game = (): JSX.Element => {
     const state = useGameState();
 
     const random = new Random(state.date);
-    const puzzle = new Puzzle(random, { min: { width: 3, height: 3, depth: 3 }, max: { width: 4, height: 4, depth: 4 } });
+    const puzzle = new Puzzle(random, { min: { width: 3, height: 2, depth: 3 }, max: { width: 4, height: 5, depth: 4 } });
 
     const [questions, setQuestions] = useState<Question[] | undefined>(undefined);
 
